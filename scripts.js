@@ -7,7 +7,8 @@
 const BASE_URL = "https://bolls.life/";
 
 // const PROXY = "https://proxy.corsfix.com/?";
-const PROXY = "";
+const PROXY = "https://api.cors.lol/?url=";
+// const PROXY = "";
 
 const LANGUAGES_JSON = "languages.json";
 
