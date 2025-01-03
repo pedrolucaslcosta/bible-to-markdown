@@ -101,7 +101,7 @@ async function fetchText(version, book, chapter) {
     const output = document.getElementById("output");
 
     const url = `${BASE_URL}get-text/${version}/${book}/${chapter}`;
-    output.innerHTML = url;
+    // output.innerHTML = url;
 
     const response = await fetch('https://proxy.corsfix.com/?' + url, {
     });
@@ -114,6 +114,7 @@ async function fetchText(version, book, chapter) {
     console.log("DATA", data);
 
     var markdown = '';
+    output.innerHTML = '';
     
     $.each(data, function(index, value) {
       var verse = value.verse;
