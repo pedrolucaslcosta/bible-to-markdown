@@ -105,7 +105,10 @@ async function fetchText(version, book, chapter) {
     const response = await fetch(PROXY + url, {
       headers: {
         "Content-Type": "application/json",
-        Origin: "https://pedrolucaslcosta.github.io",
+        "x-corsfix-headers": JSON.stringify({
+          Origin: "https://pedrolucaslcosta.github.io",
+          Referer: "https://pedrolucaslcosta.github.io",
+        }),
       },
     });
 
