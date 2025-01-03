@@ -102,7 +102,12 @@ async function fetchText(version, book, chapter) {
     const url = `${BASE_URL}get-text/${version}/${book}/${chapter}`;
     // output.innerHTML = url;
 
-    const response = await fetch(PROXY + url, {});
+    const response = await fetch(PROXY + url, {
+      headers: {
+        "Content-Type": "application/json",
+        Origin: "https://pedrolucaslcosta.github.io",
+      },
+    });
 
     console.log(response);
 
