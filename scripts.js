@@ -6,13 +6,11 @@
 
 const BASE_URL = "https://bolls.life/";
 
-const PROXY = 'https://proxy.corsfix.com/?';
+const PROXY = "https://proxy.corsfix.com/?";
 
-const LANGUAGES_JSON =
-  "https://bolls.life/static/bolls/app/views/languages.json";
+const LANGUAGES_JSON = "languages.json";
 
-const TRANSLATION_BOOKS_JSON =
-  "https://bolls.life/static/bolls/app/views/translations_books.json";
+const TRANSLATION_BOOKS_JSON = "translations_books.json";
 
 /**
  * -----------------------------------------------------------------------------
@@ -22,7 +20,7 @@ const TRANSLATION_BOOKS_JSON =
 
 async function loadBibleVersions() {
   try {
-    const response = await fetch(PROXY + LANGUAGES_JSON);
+    const response = await fetch(LANGUAGES_JSON);
 
     if (!response.ok) throw new Error("Erro ao carregar os dados.");
 
@@ -52,7 +50,7 @@ async function loadBibleVersions() {
 
 async function loadBibleBooks(version) {
   try {
-    const response = await fetch(PROXY + TRANSLATION_BOOKS_JSON);
+    const response = await fetch(TRANSLATION_BOOKS_JSON);
 
     if (!response.ok) throw new Error("Erro ao carregar os dados.");
 
@@ -104,8 +102,7 @@ async function fetchText(version, book, chapter) {
     const url = `${BASE_URL}get-text/${version}/${book}/${chapter}`;
     // output.innerHTML = url;
 
-    const response = await fetch(PROXY + url, {
-    });
+    const response = await fetch(PROXY + url, {});
 
     console.log(response);
 
@@ -114,10 +111,10 @@ async function fetchText(version, book, chapter) {
     const data = await response.json();
     console.log("DATA", data);
 
-    var markdown = '';
-    output.innerHTML = '';
-    
-    $.each(data, function(index, value) {
+    var markdown = "";
+    output.innerHTML = "";
+
+    $.each(data, function (index, value) {
       var verse = value.verse;
       var text = value.text;
       markdown += `${verse}. ${text}\n`;
