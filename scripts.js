@@ -6,7 +6,8 @@
 
 const BASE_URL = "https://bolls.life/";
 
-const PROXY = "https://proxy.corsfix.com/?";
+// const PROXY = "https://proxy.corsfix.com/?";
+const PROXY = "";
 
 const LANGUAGES_JSON = "languages.json";
 
