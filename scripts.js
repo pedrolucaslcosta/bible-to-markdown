@@ -4,8 +4,9 @@
  * -----------------------------------------------------------------------------
  */
 
-// const BASE_URL = "https://bolls.life/";
 const BASE_URL = "https://bolls.life/";
+
+const PROXY = 'https://proxy.corsfix.com/?';
 
 const LANGUAGES_JSON =
   "https://bolls.life/static/bolls/app/views/languages.json";
@@ -21,7 +22,7 @@ const TRANSLATION_BOOKS_JSON =
 
 async function loadBibleVersions() {
   try {
-    const response = await fetch(LANGUAGES_JSON);
+    const response = await fetch(PROXY + LANGUAGES_JSON);
 
     if (!response.ok) throw new Error("Erro ao carregar os dados.");
 
@@ -51,7 +52,7 @@ async function loadBibleVersions() {
 
 async function loadBibleBooks(version) {
   try {
-    const response = await fetch(TRANSLATION_BOOKS_JSON);
+    const response = await fetch(PROXY + TRANSLATION_BOOKS_JSON);
 
     if (!response.ok) throw new Error("Erro ao carregar os dados.");
 
@@ -103,7 +104,7 @@ async function fetchText(version, book, chapter) {
     const url = `${BASE_URL}get-text/${version}/${book}/${chapter}`;
     // output.innerHTML = url;
 
-    const response = await fetch('https://proxy.corsfix.com/?' + url, {
+    const response = await fetch(PROXY + url, {
     });
 
     console.log(response);
