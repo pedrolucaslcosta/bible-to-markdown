@@ -1,129 +1,106 @@
 /**
+ * NOTES
+ *
+ * ALTERNATIVA PROXY: "https://proxy.corsfix.com/?";
+ *
+ */
+/**
  * -----------------------------------------------------------------------------
  * ENVIRONMENT
  * -----------------------------------------------------------------------------
  */
 
 const BASE_URL = "https://bolls.life/";
-
-// const PROXY = "https://proxy.corsfix.com/?";
 const PROXY = "https://api.cors.lol/?url=";
-// const PROXY = "";
+const VERSIONS_JSON = "languages.json";
+const BOOKS_JSON = "translations_books.json";
 
-const LANGUAGES_JSON = "languages.json";
-
-const TRANSLATION_BOOKS_JSON = "translations_books.json";
-
+var versions;
 var books;
 
-async function getBooks() {
+var markdown = "";
+
+async function fetchVersions() {
   try {
-    const response = await fetch(TRANSLATION_BOOKS_JSON);
-    
-    if (!response.ok) throw new Error("Lista de livros não encontrada.");
-    
-    const data = await response.json();
-
-    books = data;
-  }
-  catch (error) {
-    console.error("Erro ao obter livros:", error);
-  }
-}
-
-/**
- * -----------------------------------------------------------------------------
- * FUNCTIONS
- * -----------------------------------------------------------------------------
- */
-
-async function loadBibleVersions() {
-  try {
-    const response = await fetch(LANGUAGES_JSON);
-
-    if (!response.ok) throw new Error("Erro ao carregar os dados.");
-
-    const data = await response.json();
-    console.log("LANGUAGES_JSON", data);
-
-    const select = document.getElementById("select-version");
-
-    select.innerHTML = "";
-
-    data.forEach(({ language, translations }) => {
-      translations.forEach(({ short_name, full_name }) => {
-        if (language === "Portuguese") {
-          const option = document.createElement("option");
-          option.value = short_name;
-          option.textContent = `${short_name}, ${full_name}`;
-          select.appendChild(option);
-        }
-      });
-    });
+    const response = await fetch(VERSIONS_JSON);
+    if (!response.ok) throw new Error("Erro ao carregar as versões.");
+    versions = await response.json();
+    console.log(versions);
   } catch (error) {
     console.error("Erro ao carregar as versões:", error);
-    const select = document.getElementById("select-version");
-    select.innerHTML = "<option value=''>Erro ao carregar as opções</option>";
   }
 }
 
-async function loadBibleBooks(version) {
-  try {
-    const response = await fetch(TRANSLATION_BOOKS_JSON);
+async function listVersions() {
+  const select = $("#select-version");
+  select.empty();
 
-    if (!response.ok) throw new Error("Erro ao carregar os dados.");
-
-    const data = await response.json();
-    console.log("TRANSLATION_BOOKS_JSON", data);
-
-    const select = document.getElementById("select-book");
-
-    select.innerHTML = "";
-
-    const books = data[version];
-    console.log("BIBLE_VERSION", version);
-
-    if (!books) throw new Error("Livros não encontrados.");
-
-    console.log("BOOKS", books);
-
-    books.forEach((book) => {
-      
-      console.log('book' + book.name, book);
-
-      const optionBook = document.createElement("option");
-      
-      optionBook.value = book.bookid;
-      optionBook.textContent = book.name;
-      select.appendChild(optionBook);
-
-      const chapters = book.chapters; // number
-
-      // get id book-chapters and set options foreach number
-
-      const bookChaptersSelect = document.getElementById("select-chapter");
-      bookChaptersSelect.innerHTML = "";
-
-      for (let chapter = 1; chapter <= chapters; chapter++) {
-        const option = document.createElement("option");
-        option.value = chapter;
-        option.textContent = chapter;
-        bookChaptersSelect.appendChild(option);
+  versions.forEach(({ language, translations }) => {
+    translations.forEach(({ short_name, full_name }) => {
+      if (language === "Portuguese") {
+        const option = $("<option>", {
+          value: short_name,
+          text: `${short_name}, ${full_name}`,
+        });
+        select.append(option);
       }
     });
+  });
+}
+
+async function fetchBooks() {
+  try {
+    const response = await fetch(BOOKS_JSON);
+    if (!response.ok) throw new Error("Erro ao carregar os livros.");
+    books = await response.json();
+    books = books["NVT"];
+    console.log("BOOKS", books);
   } catch (error) {
     console.error("Erro ao carregar os livros:", error);
-    const select = document.getElementById("select-book");
-    select.innerHTML = "<option value=''>Erro ao carregar os livros</option>";
   }
 }
 
-async function fetchText(version, book, chapter) {
-  try {
-    const output = document.getElementById("output");
+function listBooks() {
+  const select = $("#select-book");
+  select.empty();
 
-    const url = `${BASE_URL}get-text/${version}/${book}/${chapter}/`;
-    // output.innerHTML = url;
+  books.forEach(({ bookid, name }) => {
+    const option = $("<option>", {
+      value: bookid,
+      text: name,
+    });
+    select.append(option);
+  });
+}
+
+function listChapters() {
+  const select = $("#select-chapter");
+  select.empty();
+
+  const bookid = $("#select-book").val();
+
+  const chapters = books[bookid - 1].chapters;
+
+  for (let i = 1; i <= chapters; i++) {
+    const option = $("<option>", {
+      value: i,
+      text: i,
+    });
+    select.append(option);
+  }
+}
+
+// -----------------------------------------------------------------------------
+
+async function fetchText() {
+  const version = $("#select-version").val();
+  const book = $("#select-book").val();
+  const chapter = $("#select-chapter").val();
+
+  try {
+    const output = $("#output");
+
+    const url = `${BASE_URL}get-chapter/${version}/${book}/${chapter}/`;
 
     const response = await fetch(PROXY + url, {
       headers: {
@@ -141,8 +118,8 @@ async function fetchText(version, book, chapter) {
     const data = await response.json();
     console.log("DATA", data);
 
-    var markdown = "";
-    output.innerHTML = "";
+    
+    output.empty();
 
     $.each(data, function (index, value) {
       var verse = value.verse;
@@ -150,7 +127,7 @@ async function fetchText(version, book, chapter) {
       markdown += `${verse}. ${text}\n`;
     });
 
-    output.innerHTML += markdown;
+    output.html(markdown);
   } catch (error) {
     console.error("Erro ao carregar o texto:", error);
     const output = document.getElementById("output");
@@ -158,31 +135,32 @@ async function fetchText(version, book, chapter) {
   }
 }
 
-/**
- * -----------------------------------------------------------------------------
- * EXECUTION
- * -----------------------------------------------------------------------------
- */
+function copyText() {
+  console.log("copyText", markdown);
+  navigator.clipboard.writeText(markdown);
+  alert("Texto copiado!");
+}
+// -----------------------------------------------------------------------------
 
-loadBibleVersions();
+(async function init() {
+  await fetchVersions();
+  await fetchBooks();
+  listVersions();
+  listBooks();
+  listChapters();
+})();
 
 $(document).ready(function () {
-  const versionSelect = $("#select-version");
-  const bookSelect = $("#select-book");
-  const chapterSelect = $("#select-chapter");
-
-  versionSelect.on("change", function () {
-    const version = versionSelect.val();
-    console.log("BIBLE_VERSION", version);
-    loadBibleBooks(version);
+  $("#select-book").change(function () {
+    listChapters();
   });
 
-  const submitButton = $("#load-text");
-  submitButton.on("click", function () {
-    const version = versionSelect.val();
-    const book = bookSelect.val();
-    const chapter = chapterSelect.val();
+  $("#load-text").click(function () {
+    fetchText();
+    $("#copy-button").removeAttr("disabled");
+  });
 
-    fetchText(version, book, chapter);
+  $("#copy-button").click(function () {
+    copyText();
   });
 });

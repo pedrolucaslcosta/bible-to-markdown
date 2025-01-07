@@ -6,70 +6,62 @@
     <title>Bíblia para Markdown OL</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <div id="app" class="w-full max-w-md p-6 bg-white shadow-md rounded">
-      <h1 class="text-2xl font-bold text-center mb-4">
-        Bíblia para Markdown OL
-      </h1>
+    <div id="app" class="card bg-base-100 w-96 shadow-xl">
+      <div class="card-body">
+        <h2 class="card-title">Bíblia para Markdown OL</h2>
+        <div class="">
+          <label class="form-control w-full max-w">
+            <div class="label">
+              <span class="label-text">Selecione a versão da Bíblia</span>
+            </div>
+            <select id="select-version" class="select select-bordered">
+              <option disabled selected></option>
+            </select>
+          </label>
+        </div>
 
-      <div class="mb-4">
-        <label
-          for="select-version"
-          class="block text-sm font-medium text-gray-700"
-          >Versão:</label
-        >
-        <select
-          id="select-version"
-          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        >
-          <option value="">Carregando...</option>
-        </select>
-      </div>
+        <div class="">
+          <label class="form-control w-full max-w">
+            <div class="label">
+              <span class="label-text">Selecione o livro</span>
+            </div>
+            <select id="select-book" class="select select-bordered">
+              <option disabled selected></option>
+            </select>
+          </label>
+        </div>
 
-      <div class="mb-4">
-        <label for="select-book" class="block text-sm font-medium text-gray-700"
-          >Livro:</label
-        >
-        <select
-          id="select-book"
-          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        >
-          <option value="">Carregando...</option>
-        </select>
-      </div>
+        <div class='mb-4'>
+          <label class="form-control w-full max-w">
+            <div class="label">
+              <span class="label-text">Selecione o capítulo</span>
+            </div>
+            <select id="select-chapter" class="select select-bordered">
+              <option disabled selected></option>
+            </select>
+          </label>
+        </div>
 
-      <div class="mb-4">
-        <label
-          for="select-chapter"
-          class="block text-sm font-medium text-gray-700"
-          >Capítulo:</label
-        >
-        <select
-          id="select-chapter"
-          class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-        >
-          <option value="">Carregando...</option>
-        </select>
-      </div>
+        <button id="load-text" class="btn btn-primary btn-block mb-3">
+          Gerar Markdown
+        </button>
 
-      <button
-        id="load-text"
-        class="w-full py-2 px-4 bg-indigo-600 text-white font-semibold rounded shadow hover:bg-indigo-700 focus:ring focus:ring-indigo-400 focus:outline-none"
-      >
-        Gerar Markdown
-      </button>
+        <button id="copy-button" class="btn btn-primary btn-block" disabled>
+          Copiar
+        </button>
 
-      <div
-        class="mt-6 p-2 border border-gray-300 text-center rounded bg-gray-50 text-sm"
-      >
-        Copie todo o texto abaixo e cole no obsidian utilizando CTRL + SHIFT + V
-      </div>
-      <div
-        id="output"
-        class="mt-6 p-4 border border-gray-300 rounded bg-gray-50 text-sm whitespace-pre-wrap"
-      >
-        Selecione um livro e capítulo para exibir o texto.
+        <div id="output" class="mt-5">
+          <p>Selecione um livro e capítulo para exibir o texto.</p>
+        </div>
       </div>
     </div>
 
