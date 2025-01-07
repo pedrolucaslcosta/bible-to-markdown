@@ -99,6 +99,7 @@ async function fetchText() {
 
   try {
     const output = $("#output");
+    output.html("<p>Carregando...</p>");
 
     const url = `${BASE_URL}get-chapter/${version}/${book}/${chapter}/`;
 
@@ -118,8 +119,8 @@ async function fetchText() {
     const data = await response.json();
     console.log("DATA", data);
 
-    
-    output.empty();
+    output.html('');
+    markdown = "";
 
     $.each(data, function (index, value) {
       var verse = value.verse;
