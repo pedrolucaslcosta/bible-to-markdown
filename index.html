@@ -7,12 +7,25 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css"
       rel="stylesheet"
       type="text/css"
     />
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      * {
+        font-family: "Inter", sans-serif;
+        font-optical-sizing: auto;
+        font-style: normal;
+      }
+    </style>
   </head>
   <body class="bg-gray-100 min-h-screen flex items-center justify-center">
     <div id="app" class="card bg-base-100 w-96 shadow-xl">
@@ -20,7 +33,13 @@
         <h2 class="card-title">Bíblia para Markdown OL</h2>
         <p class="text-xs font-medium text-gray-400">
           <span id="app-version">v 1.0.0</span>
-          by <a class='underline' href="https://github.com/pedrolucaslcosta" target="_blank">@pedrolucaslco</a>
+          by
+          <a
+            class="underline"
+            href="https://github.com/pedrolucaslcosta"
+            target="_blank"
+            >@pedrolucaslco</a
+          >
         </p>
         <div class="">
           <label class="form-control w-full max-w">
@@ -44,7 +63,7 @@
           </label>
         </div>
 
-        <div class='mb-4'>
+        <div class="mb-4">
           <label class="form-control w-full max-w">
             <div class="label">
               <span class="label-text">Selecione o capítulo</span>
