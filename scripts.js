@@ -128,7 +128,8 @@ async function fetchText() {
       markdown += `${verse}. ${text}\n`;
     });
 
-    output.html(markdown);
+    const markdownToHtml = markdown.replace(/\n/g, "<br>");
+    output.html(markdownToHtml);
   } catch (error) {
     console.error("Erro ao carregar o texto:", error);
     const output = document.getElementById("output");
